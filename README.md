@@ -15,6 +15,10 @@ spring-debezium-kafka-mysql-redis-cacheable
 
 Spring Boot - Debezium - Kafka - MySQL - Redis - Cacheable ( all in one example )
 
+## Architecture
+
+![System Design](https://github.com/tugayesilyurt/spring-debezium-kafka-mysql-redis-cacheable/blob/main/assets/SystemDesign.png)
+
 ## Installation
 
 ```shell
