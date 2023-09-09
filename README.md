@@ -25,7 +25,7 @@ git clone https://github.com/tugayesilyurt/spring-debezium-kafka-mysql-redis-cac
 cd spring-debezium-kafka-mysql-redis-cacheable
 
 # Install dependencies
-Docker-compose up -d
+docker-compose up -d
 ```
 
 - `Debezium Connector`
