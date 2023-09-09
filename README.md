@@ -26,6 +26,7 @@ cd spring-debezium-kafka-mysql-redis-cacheable
 
 # Install dependencies
 Docker-compose up -d
+```
 
 - `Debezium Connector`
 
