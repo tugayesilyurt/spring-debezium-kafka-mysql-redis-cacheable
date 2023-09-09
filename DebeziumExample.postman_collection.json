@@ -1,0 +1,125 @@
+{
+	"info": {
+		"_postman_id": "429faf29-e62c-4c7e-85da-034ad9e798d9",
+		"name": "DebeziumExample",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "8163916"
+	},
+	"item": [
+		{
+			"name": "CreateProperty",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"key\": \"striker\",\n    \"value\": \"icardi\"\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8090/v1/property",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8090",
+					"path": [
+						"v1",
+						"property"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Connector",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\": \"property-connector\",\n    \"config\": {\n        \"connector.class\": \"io.debezium.connector.mysql.MySqlConnector\",\n        \"database.allowPublicKeyRetrieval\":\"true\",\n        \"database.hostname\": \"host.docker.internal\",\n        \"database.port\": \"3306\",\n        \"database.user\": \"debezium\",\n        \"database.password\": \"123456\",\n        \"database.include.list\": \"debezium\",\n        \"table.include.list\": \"debezium.debezium_property\",\n        \"topic.prefix\": \"property\",\n        \"schema.history.internal.kafka.bootstrap.servers\":  \"kafka:9092\",\n        \"schema.history.internal.kafka.topic\": \"schema-changes.db\",\n        \"database.server.id\": 1\n    }\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8083/connectors",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8083",
+					"path": [
+						"connectors"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "UpdateProperty",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"propertyKey\": \"striker\",\n    \"propertyValue\": \"icardi\"\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8090/v1/property",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8090",
+					"path": [
+						"v1",
+						"property"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetProperty",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8090/v1/property?key=striker",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8090",
+					"path": [
+						"v1",
+						"property"
+					],
+					"query": [
+						{
+							"key": "key",
+							"value": "striker"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

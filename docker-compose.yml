@@ -1,0 +1,87 @@
+version: '3.8'
+services:
+
+  redis:
+    container_name: redis-master
+    image: 'bitnami/redis:latest'
+    environment:
+      - REDIS_AOF_ENABLED=yes
+      - ALLOW_EMPTY_PASSWORD=yes
+    ports:
+      - "6379:6379"
+    volumes:
+      - ./redis/data:/bitnami/redis/data
+
+  mysql:
+    image: mysql:latest
+    container_name: mysql-debezium
+    ports:
+      - "3306:3306"
+    restart: always
+    environment:
+      MYSQL_DATABASE: debezium
+      MYSQL_USER: debezium
+      MYSQL_PASSWORD: 123456
+      MYSQL_ROOT_PASSWORD: 123456   
+    command: --character-set-server=utf8 --collation-server=utf8_general_ci
+    volumes:
+      - mysql-data:/var/lib/mysql
+    networks: 
+      - test-network 
+
+  zookeeper:
+    image: confluentinc/cp-zookeeper:latest
+    container_name: zookeeper
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
+    ports:
+      - "2181:2181"
+
+  kafka:
+    image: confluentinc/cp-kafka:latest
+    hostname: kafka-broker-1
+    container_name: kafka
+    ports:
+      - "29092:29092"
+    depends_on:
+      - zookeeper
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: 'zookeeper:2181'
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_INTERNAL:PLAINTEXT
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092,PLAINTEXT_INTERNAL://localhost:29092
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1  
+  
+  kafka-ui:
+    container_name: kafka-ui
+    image: provectuslabs/kafka-ui:latest
+    ports:
+      - 9000:8080
+    depends_on:
+      - zookeeper
+      - kafka
+    environment:
+      KAFKA_CLUSTERS_0_NAME: debezium-kafka-ui
+      KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS: kafka:9092
+      KAFKA_CLUSTERS_0_ZOOKEEPER: zookeeper:2181 
+
+  debezium:
+    image: debezium/connect:latest
+    container_name: debezium
+    ports:
+      - 8083:8083
+    environment:
+      GROUP_ID: 1
+      CONFIG_STORAGE_TOPIC: debezium-config
+      OFFSET_STORAGE_TOPIC: debezium-offset
+      STATUS_STORAGE_TOPIC: debezium-status
+      BOOTSTRAP_SERVERS: kafka:9092
+
+volumes:
+  mysql-data:
+      driver: local
+      
+networks: 
+  test-network:
+    driver: bridge
