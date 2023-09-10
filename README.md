@@ -1,6 +1,6 @@
 # Project Name
 
-spring-debezium-kafka-mysql-redis-cacheable
+Spring Boot-Debezium for Change Data Capture (CDC)-Kafka-MySQL-Redis-Cacheable ( All in one comprehensive example )
 
 ## Tech Stack
 
@@ -11,9 +11,9 @@ spring-debezium-kafka-mysql-redis-cacheable
 - Redis
 - Debezium
 
-## Description
+## Medium
 
-Spring Boot - Debezium - Kafka - MySQL - Redis - Cacheable ( all in one example )
+[Read the full article on Medium](https://medium.com/@htyesilyurt/spring-boot-debezium-for-change-data-capture-cdc-kafka-mysql-redis-cacheable-all-in-one-708ef5298cba)
 
 ## Architecture
 
